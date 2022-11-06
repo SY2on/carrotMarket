@@ -7,12 +7,14 @@ import com.umc3springboot.carrotMarket.domain.post.Post;
 import com.umc3springboot.carrotMarket.domain.post.PostRepository;
 import com.umc3springboot.carrotMarket.domain.user.User;
 import com.umc3springboot.carrotMarket.domain.user.UserRepository;
+import com.umc3springboot.carrotMarket.web.dto.PostResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostSaveReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.DATABASE_ERROR;
+import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.NOT_FOUNT_POST;
 
 
 @RequiredArgsConstructor
@@ -35,5 +37,19 @@ public class PostService {
             exception.printStackTrace();
             throw new BaseException(DATABASE_ERROR);
         }
+    }
+
+    @Transactional
+    public PostResDto findById(Long postIdx) throws BaseException{
+
+        Post post = postRepository.findById(postIdx)
+                .orElseThrow(()-> new BaseException(NOT_FOUNT_POST));
+
+        String userNickName = post.getUser().getNickName();
+        String category = post.getCategory().getName();
+
+        return PostResDto.builder().
+                entity(post).userNickName(userNickName).category(category)
+                .build();
     }
 }
