@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @NoArgsConstructor
 @Getter
 public class PostResDto {
@@ -15,6 +17,7 @@ public class PostResDto {
     private String title;
     private String content;
     private String category;
+    private LocalDateTime updatedAt;
 
     @Builder
     public PostResDto(Post entity, String userNickName, String category) {
@@ -23,6 +26,7 @@ public class PostResDto {
         this.prodName = entity.getProdName();
         this.prodCount=entity.getProdCount();
         this.discount = entity.getDiscount();
+        this.updatedAt=entity.getUpdatedAt();
         this.title = entity.getTitle();
         this.content = entity.getContent();
     }

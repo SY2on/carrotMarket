@@ -7,12 +7,16 @@ import com.umc3springboot.carrotMarket.domain.post.Post;
 import com.umc3springboot.carrotMarket.domain.post.PostRepository;
 import com.umc3springboot.carrotMarket.domain.user.User;
 import com.umc3springboot.carrotMarket.domain.user.UserRepository;
+import com.umc3springboot.carrotMarket.web.dto.PostListResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostSaveReqDto;
 import com.umc3springboot.carrotMarket.web.dto.PostUpdateReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.*;
 
@@ -53,6 +57,20 @@ public class PostService {
                 .build();
     }
 
+    @Transactional
+    public List<PostListResDto> findByUserId(Long userIdx) throws BaseException{
+
+        User user = userRepository.findById(userIdx)
+                .orElseThrow(()-> new BaseException(NOT_FOUND_USER));
+        List<Post> postList = user.getPosts();
+
+        ArrayList<PostListResDto> postListDtoList = new ArrayList<>() ;
+        for(Post post : postList){
+            postListDtoList.add(new PostListResDto(post));
+        }
+
+        return postListDtoList;
+    }
     @Transactional
     public Long update(Long postIdx, PostUpdateReqDto postUpdateReqDto) throws BaseException{
         Post post = postRepository.findById(postIdx)

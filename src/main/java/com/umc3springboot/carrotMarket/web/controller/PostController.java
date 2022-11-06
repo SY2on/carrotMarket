@@ -3,11 +3,14 @@ package com.umc3springboot.carrotMarket.web.controller;
 import com.umc3springboot.carrotMarket.config.BaseException;
 import com.umc3springboot.carrotMarket.config.BaseResponse;
 import com.umc3springboot.carrotMarket.service.PostService;
+import com.umc3springboot.carrotMarket.web.dto.PostListResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostSaveReqDto;
 import com.umc3springboot.carrotMarket.web.dto.PostUpdateReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -32,6 +35,16 @@ public class PostController {
     public BaseResponse<PostResDto> findById(@PathVariable("postIdx") Long postIdx){
         try{
             return new BaseResponse<>(postService.findById(postIdx));
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    //post list 조회 by userIdx
+    @GetMapping("")
+    public BaseResponse<List<PostListResDto>> findByUserId(@RequestParam Long userIdx){
+        try{
+            return new BaseResponse<>(postService.findByUserId(userIdx));
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

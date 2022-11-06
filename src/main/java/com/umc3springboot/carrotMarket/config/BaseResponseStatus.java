@@ -18,7 +18,8 @@ public enum BaseResponseStatus {
      */
     // Common
     REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
-    NOT_FOUND_POST(false,2001, "게시물을 찾을 수 없습니다."),
+    NOT_FOUND_USER(false,2001,"해당 유저를 찾을 수 없습니다."),
+    NOT_FOUND_POST(false,2002, "해당 게시물을 찾을 수 없습니다."),
 
 
     /**
