@@ -9,12 +9,12 @@ import com.umc3springboot.carrotMarket.domain.user.User;
 import com.umc3springboot.carrotMarket.domain.user.UserRepository;
 import com.umc3springboot.carrotMarket.web.dto.PostResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostSaveReqDto;
+import com.umc3springboot.carrotMarket.web.dto.PostUpdateReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.NOT_FOUNT_POST;
+import static com.umc3springboot.carrotMarket.config.BaseResponseStatus.*;
 
 
 @RequiredArgsConstructor
@@ -43,7 +43,7 @@ public class PostService {
     public PostResDto findById(Long postIdx) throws BaseException{
 
         Post post = postRepository.findById(postIdx)
-                .orElseThrow(()-> new BaseException(NOT_FOUNT_POST));
+                .orElseThrow(()-> new BaseException(NOT_FOUND_POST));
 
         String userNickName = post.getUser().getNickName();
         String category = post.getCategory().getName();
@@ -51,5 +51,19 @@ public class PostService {
         return PostResDto.builder().
                 entity(post).userNickName(userNickName).category(category)
                 .build();
+    }
+
+    @Transactional
+    public Long update(Long postIdx, PostUpdateReqDto postUpdateReqDto) throws BaseException{
+        Post post = postRepository.findById(postIdx)
+                .orElseThrow(()-> new BaseException(NOT_FOUND_POST));
+
+        Post updatePost = postUpdateReqDto.toEntity();
+        Category updateCategory = categoryRepository.getReferenceById(postUpdateReqDto.getCategoryIdx());
+        updatePost.setCategory(updateCategory);
+
+        post.update(updatePost);
+
+        return post.getId();
     }
 }

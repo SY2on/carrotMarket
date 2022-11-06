@@ -56,12 +56,20 @@ public class Post extends BaseTimeEntity {
         this.content = content;
         this.category = category;
     }
-
     public void setCategory(Category category){
         this.category = category;
     }
 
     public void setUser(User user){
         this.user=user;
+    }
+
+    public void update(Post post){
+        this.prodName=post.getProdName();
+        this.prodCount=post.getProdCount();
+        this.discount=post.getDiscount();
+        this.title= post.getTitle();
+        this.content=post.getContent();
+        this.category=post.getCategory();
     }
 }

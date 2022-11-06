@@ -5,6 +5,7 @@ import com.umc3springboot.carrotMarket.config.BaseResponse;
 import com.umc3springboot.carrotMarket.service.PostService;
 import com.umc3springboot.carrotMarket.web.dto.PostResDto;
 import com.umc3springboot.carrotMarket.web.dto.PostSaveReqDto;
+import com.umc3springboot.carrotMarket.web.dto.PostUpdateReqDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +37,16 @@ public class PostController {
         }
     }
 
-
+    //post 수정
+    @PutMapping("{postIdx}")
+    public BaseResponse<String> updatePost(@PathVariable("postIdx") Long postIdx, @RequestBody PostUpdateReqDto postUpdateReqDto){
+        try{
+            String result = "post가 수정되었습니다. post id="+postService.update(postIdx, postUpdateReqDto);
+            return new BaseResponse<>(result);
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 
 }
