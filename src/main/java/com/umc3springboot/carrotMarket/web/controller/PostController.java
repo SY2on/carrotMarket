@@ -38,7 +38,7 @@ public class PostController {
     }
 
     //post 수정
-    @PutMapping("{postIdx}")
+    @PutMapping("/{postIdx}")
     public BaseResponse<String> updatePost(@PathVariable("postIdx") Long postIdx, @RequestBody PostUpdateReqDto postUpdateReqDto){
         try{
             String result = "post가 수정되었습니다. post id="+postService.update(postIdx, postUpdateReqDto);
@@ -48,5 +48,15 @@ public class PostController {
         }
     }
 
+    //post 삭제
+    @DeleteMapping("/{postIdx}")
+    public BaseResponse<String> deletePost(@PathVariable("postIdx") Long postIdx){
+        try{
+            String result = "post가 삭제되었습니다. post id="+postService.delete(postIdx);
+            return new BaseResponse<>(result);
+        }catch (BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
 
 }

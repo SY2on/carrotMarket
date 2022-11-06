@@ -66,4 +66,13 @@ public class PostService {
 
         return post.getId();
     }
+
+    @Transactional
+    public  Long delete(Long postIdx) throws BaseException{
+        Post post = postRepository.findById(postIdx)
+                .orElseThrow(()-> new BaseException(NOT_FOUND_POST));
+
+        postRepository.delete(post);
+        return post.getId();
+    }
 }
