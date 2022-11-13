@@ -20,7 +20,8 @@ public enum BaseResponseStatus {
     REQUEST_ERROR(false, 2000, "입력값을 확인해주세요."),
     NOT_FOUND_USER(false,2001,"해당 유저를 찾을 수 없습니다."),
     NOT_FOUND_POST(false,2002, "해당 게시물을 찾을 수 없습니다."),
-
+    NOT_FOUND_CATEGORY(false,2003,"해당 카테고리를 찾을 수 없습니다."),
+    NOT_FOUND_ANY_POST(false,2004,"게시물이 존재하지 않습니다."),
 
     /**
      * 3000 : Response 오류
@@ -37,6 +38,7 @@ public enum BaseResponseStatus {
 
 
     // 5000 : 필요시 만들어서 쓰세요
+
 
 
     // 6000 : 필요시 만들어서 쓰세요

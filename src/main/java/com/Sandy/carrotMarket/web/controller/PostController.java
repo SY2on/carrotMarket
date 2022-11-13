@@ -42,13 +42,23 @@ public class PostController {
 
     //post list 조회 by userIdx
     @GetMapping("")
-    public BaseResponse<List<PostListResDto>> findByUserId(@RequestParam Long userIdx){
+    public BaseResponse<List<PostListResDto>> findByUserId(@RequestParam(required = false) Long userIdx, @RequestParam(required = false) Long categoryIdx){
         try{
-            return new BaseResponse<>(postService.findByUserId(userIdx));
+            System.out.println("#33"+categoryIdx);
+            if(userIdx==null&&categoryIdx==null)
+                return new BaseResponse<>(postService.findAll());
+            else if(userIdx==null) //categoryIdx 파라미터 들어옴
+                return new BaseResponse<>(postService.findByCategory(categoryIdx));
+            else if (categoryIdx==null) //userIdx 파라미터 들어옴
+                return new BaseResponse<>(postService.findByUserId(userIdx));
+            else
+                return new BaseResponse<>(postService.findByUserIdAndCategory(userIdx, categoryIdx));
+
         }catch (BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
     }
+
 
     //post 수정
     @PutMapping("/{postIdx}")

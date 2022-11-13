@@ -56,6 +56,20 @@ public class PostService {
                 entity(post).userNickName(userNickName).category(category)
                 .build();
     }
+    @Transactional
+    public List<PostListResDto> findAll() throws BaseException{
+
+        List<Post> postList = postRepository.findAll();
+        if(postList.size()==0)
+            throw new BaseException(NOT_FOUND_ANY_POST);
+
+        ArrayList<PostListResDto> postListDtoList = new ArrayList<>() ;
+        for(Post post : postList){
+            postListDtoList.add(new PostListResDto(post));
+        }
+
+        return postListDtoList;
+    }
 
     @Transactional
     public List<PostListResDto> findByUserId(Long userIdx) throws BaseException{
@@ -71,6 +85,36 @@ public class PostService {
 
         return postListDtoList;
     }
+
+    @Transactional
+    public List<PostListResDto> findByCategory(Long categoryIdx) throws BaseException{
+
+        Category category = categoryRepository.findById(categoryIdx)
+                .orElseThrow(()->new BaseException(NOT_FOUND_CATEGORY));
+        List<Post> postList = category.getPosts();
+
+        ArrayList<PostListResDto> postListDtoList = new ArrayList<>() ;
+        for(Post post : postList){
+            postListDtoList.add(new PostListResDto(post));
+        }
+
+        return postListDtoList;
+    }
+
+    @Transactional
+    public List<PostListResDto> findByUserIdAndCategory(Long userIdx,Long categoryIdx) throws BaseException{
+
+
+        List<Post> postList = postRepository.findAllByUserIdAndCategoryId(userIdx, categoryIdx);
+
+        ArrayList<PostListResDto> postListDtoList = new ArrayList<>() ;
+        for(Post post : postList){
+            postListDtoList.add(new PostListResDto(post));
+        }
+
+        return postListDtoList;
+    }
+
     @Transactional
     public Long update(Long postIdx, PostUpdateReqDto postUpdateReqDto) throws BaseException{
         Post post = postRepository.findById(postIdx)

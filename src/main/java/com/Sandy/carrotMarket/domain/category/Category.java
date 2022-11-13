@@ -1,9 +1,12 @@
 package com.Sandy.carrotMarket.domain.category;
 
+import com.Sandy.carrotMarket.domain.post.Post;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -18,4 +21,7 @@ public class Category {
 
     @Column(nullable = false)
     private String name;
+
+    @OneToMany(mappedBy = "category")
+    private List<Post> posts =new ArrayList<>();
 }
